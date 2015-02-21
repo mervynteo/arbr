@@ -30,3 +30,4 @@ node_modules
 # Ignore Platform build information
 platforms
 plugins
+hooks
