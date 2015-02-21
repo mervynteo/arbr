@@ -19,5 +19,6 @@ $dark:                            #444 !default;
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
+@import 'typography';
+$font-family-sans-serif: "SofiaPro", "Helvetica Neue", "Roboto", sans-serif;
 @import "www/lib/ionic/scss/ionic";
-
