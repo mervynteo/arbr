@@ -21,13 +21,43 @@ angular.module('arbr', ['ionic', 'arbr.controllers'])
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
+  openFB.init({appId: '902539013111062'});
+
+  // if none of the below states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/splash');
+
   $stateProvider
+
+  .state('splash', {
+    url: "/splash",
+    templateUrl: "templates/splash.html",
+    controller: 'SplashCtrl'
+  })
 
   .state('app', {
     url: "/app",
     abstract: true,
     templateUrl: "templates/menu.html",
     controller: 'AppCtrl'
+  })
+
+  .state('app.login', {
+    url: "/login",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/login.html"
+      }
+    }
+  })
+
+  .state('app.map', {
+    url: "/map",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/map.html",
+        controller: "MapCtrl"
+      }
+    }
   })
 
   .state('app.search', {
@@ -39,23 +69,15 @@ angular.module('arbr', ['ionic', 'arbr.controllers'])
     }
   })
 
-  .state('app.browse', {
-    url: "/browse",
+  .state('app.playlists', {
+    url: "/playlists",
     views: {
       'menuContent': {
-        templateUrl: "templates/browse.html"
+        templateUrl: "templates/playlists.html",
+        controller: 'PlaylistsCtrl'
       }
     }
   })
-    .state('app.playlists', {
-      url: "/playlists",
-      views: {
-        'menuContent': {
-          templateUrl: "templates/playlists.html",
-          controller: 'PlaylistsCtrl'
-        }
-      }
-    })
 
   .state('app.single', {
     url: "/playlists/:playlistId",
@@ -66,6 +88,4 @@ angular.module('arbr', ['ionic', 'arbr.controllers'])
       }
     }
   });
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
 });

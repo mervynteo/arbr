@@ -22,3 +22,41 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import 'typography';
 $font-family-sans-serif: "SofiaPro", "Helvetica Neue", "Roboto", sans-serif;
 @import "www/lib/ionic/scss/ionic";
+
+.splash {
+	background: url('../img/splash-background.jpg') no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	text-align: center;
+	padding: 25% 0;
+
+	img {
+		max-width: 65%;
+		width: 100%;
+	}
+
+	.bar-footer {
+		background: transparent;
+		height: 65px;
+
+	}
+
+	.button-fb {
+		background: #3b5998;
+		border: 0;
+		color: white;
+		font-size: 1.25em;
+	}
+}
+
+
+#map {
+width: 100%;
+height: 100%;
+}
+
+.scroll {
+height: 100%;
+}

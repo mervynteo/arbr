@@ -7035,3 +7035,30 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+.splash {
+  background: url('../img/splash-background.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  text-align: center;
+  padding: 25% 0; }
+  .splash img {
+    max-width: 65%;
+    width: 100%; }
+  .splash .bar-footer {
+    background: transparent;
+    height: 65px; }
+  .splash .button-fb {
+    background: #3b5998;
+    border: 0;
+    color: white;
+    font-size: 1.25em; }
+
+#map {
+  width: 100%;
+  height: 100%; }
+
+.scroll {
+  height: 100%; }
