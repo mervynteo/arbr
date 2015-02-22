@@ -5,7 +5,6 @@ in ionic's _variables.scss file.
 For example, you might change some of the default colors:
 
 $light:                           #fff !default;
-$stable:                          #f8f8f8 !default;
 $positive:                        #387ef5 !default;
 $calm:                            #11c1f3 !default;
 $balanced:                        #33cd5f !default;
@@ -20,7 +19,19 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
 @import 'typography';
+@import 'helpers';
+
+// My Variables
+$arbr-dark-blue: #374A5C;
+$arbr-lighter-green: #A1CBAA;
+$arbr-darker-green: #84A187;
+$arbr-pink: #D85C65;	
+
+// Overrides
 $font-family-sans-serif: "SofiaPro", "Helvetica Neue", "Roboto", sans-serif;
+$royal: $arbr-dark-blue !default;
+
+
 @import "www/lib/ionic/scss/ionic";
 
 .splash {
@@ -33,8 +44,7 @@ $font-family-sans-serif: "SofiaPro", "Helvetica Neue", "Roboto", sans-serif;
 	padding: 25% 0;
 
 	img {
-		max-width: 65%;
-		width: 100%;
+		max-width: 250px
 	}
 
 	.bar-footer {
@@ -51,12 +61,40 @@ $font-family-sans-serif: "SofiaPro", "Helvetica Neue", "Roboto", sans-serif;
 	}
 }
 
-
 #map {
-width: 100%;
-height: 100%;
+	width: 100%;
+	height: 100%;
 }
 
 .scroll {
-height: 100%;
+	height: 100%;
+}
+
+.bar.bar-header {
+	height: 55px;
+
+	.title {
+		font-weight: bold;
+		font-size: 2.65em;
+	}
+}
+
+.tabs {
+	height: 65px;
+	border-top: 0;
+
+	a {
+		padding-top: 8px;
+		color: $arbr-dark-blue;
+	}
+
+	.tab-item .icon {
+		margin: 0 auto 2px;
+		font-size: 25px;
+	}
+
+	.tab-title {
+		font-size: 1.5em;
+		padding-top: 1em;
+	}
 }
