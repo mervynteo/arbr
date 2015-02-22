@@ -49,6 +49,53 @@ angular.module('arbr.controllers', [])
 
 .controller('MapCtrl', function($scope, $ionicLoading, $compile) {
 
+    var markers = [];
+    var infoWindows = [];
+
+    function setArbrMarkers(map) {
+      var firebaseRef = new Firebase("https://arbr-project.firebaseio.com/");
+      var geoFire = new GeoFire(firebaseRef);
+
+      firebaseRef.on("value", function(snapshot) {
+        var rawLocations = snapshot.val();
+        var locations = rawLocations[0].locations;
+
+        for(x in locations) {
+          locName = locations[x].name;
+          locPosLat = locations[x].pos[0];
+          locPosLong = locations[x].pos[1];
+          var locPosFinal = new google.maps.LatLng(locPosLat, locPosLong);
+
+          var marker = new google.maps.Marker({
+            position: locPosFinal,
+            icon: 'img/arbr-map-marker.png',
+            map: map,
+            title: locName,
+            animation: google.maps.Animation.DROP,
+            infoWindowIndex: locations[x]
+          });
+
+          marker.contentString = "<h3 style='z-index:999999999;' ng-click='clickTest()'>" + locations[x].name + "</h3>";
+          var compiled = $compile(marker.contentString)($scope);
+          console.log(compiled);
+
+          var infoWindow = new google.maps.InfoWindow({});
+
+          google.maps.event.addListener(marker, 'click', function(){
+              infoWindow.setContent(compiled[0]);
+              infoWindow.open(map, this);
+              console.log('rawr');
+          });
+
+        }
+
+      }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      });
+    }  
+
+
+
     function initialize() {
         var myLatlng = new google.maps.LatLng(37.7833,-122.4167);
 
@@ -60,17 +107,14 @@ angular.module('arbr.controllers', [])
         var map = new google.maps.Map(document.getElementById("map"),
             mapOptions);
 
-        // var marker = new google.maps.Marker({
-        //   position: myLatlng,
-        //   map: map,
-        //   title: 'Uluru (Ayers Rock)'
-        // });
-
-        // google.maps.event.addListener(marker, 'click', function() {
-        //   infowindow.open(map,marker);
-        // });
-
         $scope.map = map;
+
+        setArbrMarkers(map);
+
+        $scope.clickTest = function() {
+          console.log(this);
+        };
+
     };
 
     ionic.Platform.ready(initialize);
@@ -94,7 +138,7 @@ angular.module('arbr.controllers', [])
 
           var newMarker = new google.maps.Marker({
             position: newPos,
-            icon: 'img/arbr-map-marker.png',
+            // icon: 'img/arbr-map-marker.png',
             map: $scope.map,
             title: 'rawrawr'
           });
@@ -114,10 +158,6 @@ angular.module('arbr.controllers', [])
         }, function(error) {
           alert('Unable to get location: ' + error.message);
         });
-    };
-
-    $scope.clickTest = function() {
-        alert('You clicked me!')
     };
 })
 
