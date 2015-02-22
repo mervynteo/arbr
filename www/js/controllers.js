@@ -55,6 +55,7 @@ angular.module('arbr.controllers', [])
     function setArbrMarkers(map) {
       var firebaseRef = new Firebase("https://arbr-project.firebaseio.com/");
       var geoFire = new GeoFire(firebaseRef);
+      var compiled;
 
       firebaseRef.on("value", function(snapshot) {
         var rawLocations = snapshot.val();
@@ -76,13 +77,15 @@ angular.module('arbr.controllers', [])
           });
 
           marker.contentString = "<h3 style='z-index:999999999;' ng-click='clickTest()'>" + locations[x].name + "</h3>";
-          var compiled = $compile(marker.contentString)($scope);
-          console.log(compiled);
+          marker.compiled = $compile(marker.contentString)($scope);
 
-          var infoWindow = new google.maps.InfoWindow({});
+          var infoWindow = new google.maps.InfoWindow({
+            // content: compiled[0];
+          });
 
           google.maps.event.addListener(marker, 'click', function(){
-              infoWindow.setContent(compiled[0]);
+              // infoWindow.setContent(compiled[0]);
+              infoWindow.setContent(this.compiled[0]);
               infoWindow.open(map, this);
               console.log('rawr');
           });
@@ -112,7 +115,7 @@ angular.module('arbr.controllers', [])
         setArbrMarkers(map);
 
         $scope.clickTest = function() {
-          console.log(this);
+          alert('rawr');
         };
 
     };
