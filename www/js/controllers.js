@@ -16,6 +16,10 @@ angular.module('arbr.controllers', [])
     $scope.modal.hide();
   };
 
+  $scope.userSettingsGo = function() {
+    console.log('rawr');
+  }
+
   // Open the login modal
   $scope.login = function() {
     $scope.modal.show();
@@ -50,75 +54,13 @@ angular.module('arbr.controllers', [])
 
 .controller('MapCtrl', function($scope, $ionicLoading, $compile) {
 
+    $scope.map = {};
+
     $scope.clickTest = function() {
-      alert('rawr');
+      console.log(this.$id);
     }
 
-    var markers = [];
-    var infoWindows = [];
-
-    function setArbrMarkers(map) {
-      var firebaseRef = new Firebase("https://arbr-project.firebaseio.com/");
-      var geoFire = new GeoFire(firebaseRef);
-      var compiled;
-
-      firebaseRef.on("value", function(snapshot) {
-        var rawLocations = snapshot.val();
-        var locations = rawLocations[0].locations;
-
-        for(x in locations) {
-          locName = locations[x].name;
-          locPosLat = locations[x].pos[0];
-          locPosLong = locations[x].pos[1];
-          var locPosFinal = new google.maps.LatLng(locPosLat, locPosLong);
-
-          var marker = new google.maps.Marker({
-            position: locPosFinal,
-            icon: 'img/arbr-map-marker.png',
-            map: map,
-            title: locName,
-            animation: google.maps.Animation.DROP
-          });
-
-          marker.contentString = "<div><h4 class=em-default' ng-click='clickTest()'>" + locations[x].name + "</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, excepturi. Provident fuga inventore quod dolores sint est sed ad accusamus, nihil labore beatae eos enim sit, voluptatibus debitis similique temporibus</p></div>";
-          marker.compiled = $compile(marker.contentString)($scope);
-
-
-          var infoWindow = new google.maps.InfoWindow({});
-
-          google.maps.event.addListener(marker, 'click', function(){
-              infoWindow.setContent(this.compiled[0]);
-              infoWindow.open(map, this);
-          });
-
-        }
-
-      }, function (errorObject) {
-        console.log("The read failed: " + errorObject.code);
-      });
-    }  
-
-    function initialize() {
-        var myLatlng = new google.maps.LatLng(37.7833,-122.4167);
-
-        var mapOptions = {
-          center: myLatlng,
-          zoom: 12,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map"),
-            mapOptions);
-
-        $scope.map = map;
-
-        setArbrMarkers(map);
-    };
-
-    ionic.Platform.ready(initialize);
-
-    // google.maps.event.addDomListener(window, 'load', initialize);
-
-    $scope.centerOnMe = function() {
+    function centerOnMe() {
         if(!$scope.map) {
             return;
         }
@@ -156,6 +98,95 @@ angular.module('arbr.controllers', [])
           alert('Unable to get location: ' + error.message);
         });
     };
+
+    // Placeholders for our Pins and Popups
+    var markers = [];
+    var map, infoWindow;  
+
+    // General GoogleMaps configuration
+    var mapOptions = {
+      center: new google.maps.LatLng(37.7833,-122.4167),
+      zoom: 12,
+      scaleControl: false,
+      streetViewControl: false,
+      disableDefaultUI: true,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      scrollwheel: false
+    };
+
+    function setMarker(map, position, title, content) {
+      var marker;
+      var markerOptions = {
+        position: position,
+        map: map,
+        title: title,
+        animation: google.maps.Animation.DROP,
+        icon: 'img/arbr-map-marker.png'
+      }
+
+      marker = new google.maps.Marker(markerOptions);
+      markers.push(marker); // add marker to array
+
+      google.maps.event.addListener(marker, 'click', function(scope) {
+        var contentString = 
+        "<div><h4 class=em-default>" 
+        + content 
+        + "</h4>" 
+        + "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo, modi qui et alias impedit culpa tempore, veritatis explicabo in quia! Minima a dolorum voluptas doloribus praesentium enim hic unde accusantium!</p>"
+        + "<button ng-click=clickTest() class='button button-balanced em-default'>Check in to plant a tree!</button>"
+        + "</div>";
+
+        var compiled = $compile(contentString)($scope);
+        console.log(compiled);
+
+        if (infoWindow !== void 0) {
+            infoWindow.close();
+        }
+
+        var infoWindowOptions = {
+            content: compiled[0],
+            maxWidth: 250
+        };
+
+        infoWindow = new google.maps.InfoWindow(infoWindowOptions);
+        infoWindow.open(map, marker);
+      })
+
+    }
+
+    function setArbrMarkers(map) {
+      var firebaseRef = new Firebase("https://arbr-project.firebaseio.com/");
+      var geoFire = new GeoFire(firebaseRef);
+      var compiled;
+
+      // Get some data from Firebase
+      var firebaseRef = new Firebase("https://arbr-project.firebaseio.com/");
+      firebaseRef.on("value", function(snapshot) {
+          rawLocationData = snapshot.val();
+          usableLocationData = rawLocationData[0].locations;
+
+          for(i in usableLocationData) {
+              locName = usableLocationData[i].name;
+              locPosLat = usableLocationData[i].pos[0];
+              locPosLong = usableLocationData[i].pos[1];
+              locPosLatLong = new google.maps.LatLng(locPosLat, locPosLong);
+              setMarker(map, locPosLatLong, locName, locName);
+          }
+      });
+    }  
+
+    function initialize() {
+        var map = new google.maps.Map(document.getElementById("map"),
+            mapOptions);
+
+        $scope.map = map;
+
+        centerOnMe();
+        setArbrMarkers(map);
+    };
+
+    ionic.Platform.ready(initialize);
+
 })
 
 .controller('PlaylistsCtrl', function($scope) {

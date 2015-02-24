@@ -30,7 +30,7 @@ $arbr-pink: #D85C65;
 // Overrides
 $font-family-sans-serif: "SofiaPro", "Helvetica Neue", "Roboto", sans-serif;
 $royal: $arbr-dark-blue !default;
-
+$balanced: $arbr-darker-green !default;
 
 @import "www/lib/ionic/scss/ionic";
 
@@ -63,13 +63,10 @@ $royal: $arbr-dark-blue !default;
 
 #map {
 	width: 100%;
-	height: calc(100% - 65px);
+	height: 100%;
+	// height: calc(100% - 65px);
 }
 
-#gmaps {
-    width: 100%;
-    height: calc(100% - 65px);
-}
 
 .scroll {
 	height: 100%;
