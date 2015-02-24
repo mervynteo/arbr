@@ -41,6 +41,7 @@ angular.module('arbr.controllers', [])
                   $state.go("app.map");
               } else {
                   alert('Facebook login failed');
+                  $state.go("splash");
               }
           },
           {scope: 'email,publish_actions'});
@@ -48,6 +49,10 @@ angular.module('arbr.controllers', [])
 })
 
 .controller('MapCtrl', function($scope, $ionicLoading, $compile) {
+
+    $scope.clickTest = function() {
+      alert('rawr');
+    }
 
     var markers = [];
     var infoWindows = [];
@@ -72,22 +77,18 @@ angular.module('arbr.controllers', [])
             icon: 'img/arbr-map-marker.png',
             map: map,
             title: locName,
-            animation: google.maps.Animation.DROP,
-            infoWindowIndex: locations[x]
+            animation: google.maps.Animation.DROP
           });
 
-          marker.contentString = "<h3 style='z-index:999999999;' ng-click='clickTest()'>" + locations[x].name + "</h3>";
+          marker.contentString = "<div><h4 class=em-default' ng-click='clickTest()'>" + locations[x].name + "</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, excepturi. Provident fuga inventore quod dolores sint est sed ad accusamus, nihil labore beatae eos enim sit, voluptatibus debitis similique temporibus</p></div>";
           marker.compiled = $compile(marker.contentString)($scope);
 
-          var infoWindow = new google.maps.InfoWindow({
-            // content: compiled[0];
-          });
+
+          var infoWindow = new google.maps.InfoWindow({});
 
           google.maps.event.addListener(marker, 'click', function(){
-              // infoWindow.setContent(compiled[0]);
               infoWindow.setContent(this.compiled[0]);
               infoWindow.open(map, this);
-              console.log('rawr');
           });
 
         }
@@ -96,8 +97,6 @@ angular.module('arbr.controllers', [])
         console.log("The read failed: " + errorObject.code);
       });
     }  
-
-
 
     function initialize() {
         var myLatlng = new google.maps.LatLng(37.7833,-122.4167);
@@ -113,11 +112,6 @@ angular.module('arbr.controllers', [])
         $scope.map = map;
 
         setArbrMarkers(map);
-
-        $scope.clickTest = function() {
-          alert('rawr');
-        };
-
     };
 
     ionic.Platform.ready(initialize);
