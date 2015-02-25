@@ -46,12 +46,6 @@ angular.module('arbr', ['ionic', 'arbr.controllers', 'ngCordova'])
     url: "/map",
     templateUrl: "templates/map.html",
     controller: "MapCtrl"
-    // views: {
-    //   'tab-map': {
-    //     templateUrl: "templates/map.html",
-    //     controller: "MapCtrl"
-    //   }
-    // }
   });
 
 });

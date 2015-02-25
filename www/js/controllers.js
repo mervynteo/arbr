@@ -8,6 +8,7 @@ angular.module('arbr.controllers', [])
   $scope.fbLogin = function() {
       openFB.login(
           function(response) {
+              console.log(response);
               if (response.status === 'connected') {
                   $state.go("map");
               } else {

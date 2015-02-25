@@ -1,8 +1,66 @@
+<!DOCTYPE html>
 <html>
-<body>
-<script>
-    window.opener.openFB.oauthCallback(window.location.href);
-    window.close();
-</script>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>Arbr</title>
+    
+
+    <link href="css/ionic.app.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/font-awesome.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+    
+    <!-- Firebase -->
+    <script src="https://cdn.firebase.com/js/client/2.0.2/firebase.js"></script>
+
+    <!-- GeoFire -->
+    <script src="https://cdn.firebase.com/libs/geofire/3.2.1/geofire.min.js"></script>
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- google maps javascript -->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+
+    <script src="js/rsvp-latest.js"></script>
+
+
+    <script src="lib/ng-cordova.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="lib/openfb.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <!-- <script src="js/directives.js"></script> -->
+  </head>
+
+  <body ng-app="arbr" animation="slide-left-right-ios7">
+    <!-- 
+          The nav bar that will be updated as we navigate between views
+          Additional attributes set its look, ion-nav-bar animation and icons
+          Icons provided by Ionicons: http://ionicons.com/ 
+        -->
+
+        <script>
+            window.opener.openFB.oauthCallback(window.location.href);
+            window.close();
+        </script>
+
+        <ion-nav-bar class="bar-royal">
+        </ion-nav-bar>
+
+        <!-- 
+          The views will be rendered in the <ion-nav-view> directive below
+          Templates are in the /templates folder (but you could also
+          have templates inline in this html file if you'd like).
+        -->
+        <ion-nav-view></ion-nav-view>
+  </body>
 </html>
