@@ -30,6 +30,7 @@ $arbr-pink: #D85C65;
 // Overrides
 $font-family-sans-serif: "SofiaPro", "Helvetica Neue", "Roboto", sans-serif;
 $royal: $arbr-dark-blue !default;
+$balanced: #84A187 !default;
 
 
 @import "www/lib/ionic/scss/ionic";
@@ -107,4 +108,8 @@ $royal: $arbr-dark-blue !default;
 
 [nav-view-transition][nav-view-direction] {
 background-color: transparent;
+}
+
+.whiteText {
+	color: white !important;
 }

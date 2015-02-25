@@ -3,7 +3,7 @@
           <button class="button button-icon ion-ios-arrow-left" ng-click="myGoBack()">
           </button>
     </ion-nav-buttons>
-  <ion-content has-header="true">
+  <ion-content has-header="true" padding="true">
     
 
 
@@ -15,7 +15,14 @@
           <p>{{data.email}}</p>
         </a>
 
+    </div>
 
+    <!-- <div class="bar bar-footer">
+      <button ng-click="logout()" class="button-block button-balanced"><h4>Log Out</h4></button>
+    </div> -->
+
+    <div class="bar bar-footer bar-balanced">
+      <button ng-click="logout()" class="button-block button-clear title"><h4 class="whiteText">Log Out</h4></button>
     </div>
 
   </ion-content>

@@ -25,7 +25,17 @@ angular.module('arbr.controllers', [])
 
   $scope.myGoBack = function() {
     $state.go("map");
-  };
+  }
+
+  $scope.logout = function() {
+    console.log('rawr');
+    openFB.logout(
+      function() {
+          alert('Logout successful');
+          $state.go('splash');
+      },
+      '');
+  }
 
  function getInfo() {
      openFB.api({
