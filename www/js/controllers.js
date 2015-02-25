@@ -4,11 +4,27 @@ angular.module('arbr.controllers', [])
   console.log('rawr');
 })
 
+.factory("User", ["$FirebaseObject", "$firebase", function($FirebaseObject, $firebase) {
+  // create a new factory based on $FirebaseObject
+  var UserFactory = $FirebaseObject.$extendFactory({
+    // these methods exist on the prototype, so we can access the data using `this`
+    getFullName: function() {
+      return this.firstName + " " + this.lastName;
+    }
+  });
+  return function(userId) {
+    var ref = new Firebase("https://<your firebase>.firebaseio.com/users/").child(userId);
+    // override the factory used by $firebase
+    var sync = $firebase(ref, { objectFactory: UserFactory });
+    return sync.$asObject(); // this will be an instance of UserFactory
+  }
+}])
+
 .controller('SplashCtrl', function($scope, $stateParams, $state) {
   $scope.fbLogin = function() {
       openFB.login(
           function(response) {
-              console.log(response);
+              console.log(response)
               if (response.status === 'connected') {
                   $state.go("map");
               } else {
@@ -57,7 +73,11 @@ angular.module('arbr.controllers', [])
   ionic.Platform.ready(getInfo);
 })
 
-.controller('MapCtrl', function($scope, $ionicLoading, $compile, $state) {
+.controller('MapCtrl', function($scope, $ionicLoading, $compile, $state, $stateParams, FirebaseService) {
+
+    $scope.pet = FirebaseService.get(2);
+
+    console.log($scope.pet);
 
     $scope.userSettings = function() {
       $state.go("userProfile");
@@ -146,7 +166,7 @@ angular.module('arbr.controllers', [])
             var infoWindowOptions = {
                 content: compiled[0]
             };
-            infoWindow = new google.maps.InfoWindow(infoWindowOptions);
+            x infoWindow = new google.maps.InfoWindow(infoWindowOptions);
             infoWindow.open(map, marker);
         });
     }

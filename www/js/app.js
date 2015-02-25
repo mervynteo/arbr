@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('arbr', ['ionic', 'arbr.controllers', 'ngCordova'])
+angular.module('arbr', ['ionic', 'arbr.controllers', 'arbr.services', 'ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -35,6 +35,13 @@ angular.module('arbr', ['ionic', 'arbr.controllers', 'ngCordova'])
     templateUrl: "templates/splash.html",
     controller: 'SplashCtrl'
   })
+
+  // .state('arbrLocations', {
+  //   url: "/arbrLocations",
+  //   abstract: true,
+  //   template: "templates/arbrLocations.html",
+  //   controller: "ArbrLocationCtrl"
+  // })
 
   .state('userProfile', {
       url: "/profile",
