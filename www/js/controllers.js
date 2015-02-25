@@ -1,6 +1,7 @@
 angular.module('arbr.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicLoading) {
+  console.log('rawr');
 })
 
 .controller('SplashCtrl', function($scope, $stateParams, $state) {
@@ -18,11 +19,12 @@ angular.module('arbr.controllers', [])
   }
 })
 
-.controller('ProfileCtrl', function($scope, $ionicHistory) {
+.controller('ProfileCtrl', function($scope, $ionicHistory, $state) {
   $scope.data = {};
+  $scope.photoUrl = {};
 
   $scope.myGoBack = function() {
-    $ionicHistory.goBack();
+    $state.go("map");
   };
 
  function getInfo() {
@@ -30,9 +32,11 @@ angular.module('arbr.controllers', [])
          path: '/me',
          success: function(data) {
              // console.log(JSON.stringify(data));
+             $scope.photoUrl = 'http://graph.facebook.com/' + data.id + '/picture?type=small';
              $scope.data = data;
              $scope.$apply();
          },
+
         error: function() {
           alert('Error getting your profile from FB');
         }
@@ -156,7 +160,7 @@ angular.module('arbr.controllers', [])
             }
         });
 
-        $scope.centerOnMe();
+        // $scope.centerOnMe();
     };
 
     ionic.Platform.ready(initialize);

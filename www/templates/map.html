@@ -1,11 +1,9 @@
-<ion-view view-title="arbr" ng-init="init()">
-  <ion-nav-bar class="bar-royal">
-    <ion-nav-buttons side="right">
-          <button class="button button-icon ion-gear-a" ng-click="userSettings()">
-          </button>
-        </ion-nav-buttons>
-  </ion-nav-bar>
-  <ion-content scroll="false">
-  	<div id="map" data-tap-disabled="true" ></div>
+<ion-view title="arbr">
+  <ion-nav-buttons side="right">
+        <button class="button button-icon ion-gear-a" ui-sref="userProfile">
+        </button>
+  </ion-nav-buttons>
+  <ion-content has-tabs="false" scroll="false">
+    <div id="map" data-tap-disabled="true" ></div>
   </ion-content>
 </ion-view>
