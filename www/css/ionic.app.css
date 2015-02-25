@@ -7317,11 +7317,10 @@ a.button {
 
 #map {
   width: 100%;
-  height: calc(100% - 65px); }
+  height: 100%; }
 
 #gmaps {
-  width: 100%;
-  height: calc(100% - 65px); }
+  width: 100%; }
 
 .scroll {
   height: 100%; }

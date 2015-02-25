@@ -1,0 +1,21 @@
+<ion-view view-title="Profile">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-buttons side="primary">
+          <button class="button button-icon ion-chevron-left" ng-click="myGoBack()">
+          </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content>
+    
+    <div class="list card">
+        <div class="item">
+            <h2>{{data.first_name}} {{data.last_name}}</h2>
+            <p>{{data.email}}</p>
+        </div>
+        <div class="item item-image">
+            <img ng-src="https://graph.facebook.com/{{ user.id }}/picture?width=400&height=400" />
+        </div>
+    </div>
+  </ion-content>
+</ion-view>
+

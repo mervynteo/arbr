@@ -35,58 +35,16 @@ angular.module('arbr', ['ionic', 'arbr.controllers', 'ngCordova'])
     controller: 'SplashCtrl'
   })
 
-  .state('app', {
-    url: "/app",
-    abstract: true,
-    templateUrl: "templates/menu.html",
-    controller: 'AppCtrl'
+  .state('userProfile', {
+      url: "/profile",
+      templateUrl: "templates/userprofile.html",
+      controller: "ProfileCtrl"
   })
 
-  .state('app.login', {
-    url: "/login",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/login.html"
-      }
-    }
-  })
-
-  .state('app.map', {
+  .state('map', {
     url: "/map",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/map.html",
-        controller: "MapCtrl"
-      }
-    }
-  })
-
-  .state('app.search', {
-    url: "/search",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/search.html"
-      }
-    }
-  })
-
-  .state('app.playlists', {
-    url: "/playlists",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/playlists.html",
-        controller: 'PlaylistsCtrl'
-      }
-    }
-  })
-
-  .state('app.single', {
-    url: "/playlists/:playlistId",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/playlist.html",
-        controller: 'PlaylistCtrl'
-      }
-    }
+    templateUrl: "templates/map.html",
+    controller: "MapCtrl"
   });
+
 });

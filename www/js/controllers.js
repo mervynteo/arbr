@@ -1,36 +1,6 @@
 angular.module('arbr.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $ionicLoading) {
-  // Form data for the login modal
-  $scope.loginData = {};
-  
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
-
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
-
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
 })
 
 .controller('SplashCtrl', function($scope, $stateParams, $state) {
@@ -38,9 +8,9 @@ angular.module('arbr.controllers', [])
       openFB.login(
           function(response) {
               if (response.status === 'connected') {
-                  $state.go("app.map");
+                  $state.go("map");
               } else {
-                  alert('Facebook login failed');
+                  alert('Facebook login failed, please try again');
                   $state.go("splash");
               }
           },
@@ -48,75 +18,51 @@ angular.module('arbr.controllers', [])
   }
 })
 
-.controller('MapCtrl', function($scope, $ionicLoading, $compile) {
+.controller('ProfileCtrl', function($scope, $ionicHistory) {
+  $scope.data = {};
 
-    $scope.clickTest = function() {
-      alert('rawr');
+  $scope.myGoBack = function() {
+    $ionicHistory.goBack();
+  };
+
+ function getInfo() {
+     openFB.api({
+         path: '/me',
+         success: function(data) {
+             // console.log(JSON.stringify(data));
+             $scope.data = data;
+             $scope.$apply();
+         },
+        error: function() {
+          alert('Error getting your profile from FB');
+        }
+      });
+  }
+
+  ionic.Platform.ready(getInfo);
+})
+
+.controller('MapCtrl', function($scope, $ionicLoading, $compile, $state) {
+
+    $scope.userSettings = function() {
+      $state.go("userProfile");
     }
 
+    var map, infoWindow;
     var markers = [];
-    var infoWindows = [];
 
-    function setArbrMarkers(map) {
-      var firebaseRef = new Firebase("https://arbr-project.firebaseio.com/");
-      var geoFire = new GeoFire(firebaseRef);
-      var compiled;
-
-      firebaseRef.on("value", function(snapshot) {
-        var rawLocations = snapshot.val();
-        var locations = rawLocations[0].locations;
-
-        for(x in locations) {
-          locName = locations[x].name;
-          locPosLat = locations[x].pos[0];
-          locPosLong = locations[x].pos[1];
-          var locPosFinal = new google.maps.LatLng(locPosLat, locPosLong);
-
-          var marker = new google.maps.Marker({
-            position: locPosFinal,
-            icon: 'img/arbr-map-marker.png',
-            map: map,
-            title: locName,
-            animation: google.maps.Animation.DROP
-          });
-
-          marker.contentString = "<div><h4 class=em-default' ng-click='clickTest()'>" + locations[x].name + "</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, excepturi. Provident fuga inventore quod dolores sint est sed ad accusamus, nihil labore beatae eos enim sit, voluptatibus debitis similique temporibus</p></div>";
-          marker.compiled = $compile(marker.contentString)($scope);
-
-
-          var infoWindow = new google.maps.InfoWindow({});
-
-          google.maps.event.addListener(marker, 'click', function(){
-              infoWindow.setContent(this.compiled[0]);
-              infoWindow.open(map, this);
-          });
-
-        }
-
-      }, function (errorObject) {
-        console.log("The read failed: " + errorObject.code);
-      });
-    }  
-
-    function initialize() {
-        var myLatlng = new google.maps.LatLng(37.7833,-122.4167);
-
-        var mapOptions = {
-          center: myLatlng,
-          zoom: 12,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map"),
-            mapOptions);
-
-        $scope.map = map;
-
-        setArbrMarkers(map);
+    // map config
+    var mapOptions = {
+        center: new google.maps.LatLng(37.7833,-122.4167),
+        zoom: 12,
+        scaleControl: false,
+        streetViewControl: false,
+        disableDefaultUI: true,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        scrollwheel: false
     };
 
-    ionic.Platform.ready(initialize);
-
-    // google.maps.event.addDomListener(window, 'load', initialize);
+    $scope.map = {};
 
     $scope.centerOnMe = function() {
         if(!$scope.map) {
@@ -141,7 +87,7 @@ angular.module('arbr.controllers', [])
           });
 
           //Marker + infowindow + angularjs compiled ng-click
-          var contentString = "<div><a ng-click='clickTest()'>You are here!</a></div>";
+          var contentString = "<div><a ng-click='clickTest()''>You are here!</a></div>";
           var compiled = $compile(contentString)($scope);
 
           var infowindow = new google.maps.InfoWindow({
@@ -156,19 +102,62 @@ angular.module('arbr.controllers', [])
           alert('Unable to get location: ' + error.message);
         });
     };
-})
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
+    $scope.clickTest = function() {
+      console.log('here we go');
+    }
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+    function setMarker(map, position, title, content) {
+        var marker;
+        var markerOptions = {
+            position: position,
+            map: map,
+            title: title,
+            animation: google.maps.Animation.DROP,
+            icon: 'img/arbr-map-marker.png'
+        };
 
+        marker = new google.maps.Marker(markerOptions);
+        markers.push(marker); // add marker to array
+        
+        google.maps.event.addListener(marker, 'click', function (scope) {
+            var contentString = "<div><h4 class=windowTitle ng-click=clickTest()>" + content + "</h4></div>";
+            var compiled = $compile(contentString)($scope);
+
+            if (infoWindow !== void 0) {
+                infoWindow.close();
+            }
+            // create new window
+            var infoWindowOptions = {
+                content: compiled[0]
+            };
+            infoWindow = new google.maps.InfoWindow(infoWindowOptions);
+            infoWindow.open(map, marker);
+        });
+    }
+
+
+    function initialize() {
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        $scope.map = map;
+
+        // Get some data from Firebase
+        var firebaseRef = new Firebase("https://arbr-project.firebaseio.com/");
+        firebaseRef.on("value", function(snapshot) {
+            rawLocationData = snapshot.val();
+            usableLocationData = rawLocationData[0].locations;
+
+            for(i in usableLocationData) {
+                locName = usableLocationData[i].name;
+                locPosLat = usableLocationData[i].pos[0];
+                locPosLong = usableLocationData[i].pos[1];
+                locPosLatLong = new google.maps.LatLng(locPosLat, locPosLong);
+                setMarker(map, locPosLatLong, locName, locName);
+            }
+        });
+
+        $scope.centerOnMe();
+    };
+
+    ionic.Platform.ready(initialize);
 });

@@ -63,12 +63,12 @@ $royal: $arbr-dark-blue !default;
 
 #map {
 	width: 100%;
-	height: calc(100% - 65px);
+	height: 100%;
 }
 
 #gmaps {
     width: 100%;
-    height: calc(100% - 65px);
+    // height: calc(100% - 65px);
 }
 
 .scroll {
