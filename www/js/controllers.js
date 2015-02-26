@@ -63,6 +63,14 @@ angular.module('arbr.controllers', [])
     $scope.icon = '../img/arbr-map-marker.png';
     $scope.map = { center: { latitude: 37.7833, longitude: -122.4167 }, zoom: 13, options: {disableDefaultUI: true}};
 
+    // $http.get('http://localhost:3300/api/places').then(function(resp) {
+    //     console.log('Success', resp);
+    //     // For JSON responses, resp.data contains the result
+    //   }, function(err) {
+    //     console.error('ERR', err);
+    //     // err.status will contain the status code
+    //   })
+
     var ref = new Firebase("https://arbr-project.firebaseio.com");
     var sync = $firebase(ref);
     var obj = sync.$asObject();
@@ -74,7 +82,7 @@ angular.module('arbr.controllers', [])
       var i = 0;
       for (x in unformattedLocations) { 
         formattedLocations[i] = {'id': i,
-                                 'icon': '../img/arbr-map-marker.png',
+                                 'icon': './img/arbr-map-marker.png',
                                  'name': unformattedLocations[x].name, 
                                  'latitude': unformattedLocations[x].pos[0],
                                  'longitude': unformattedLocations[x].pos[1],
@@ -94,7 +102,8 @@ angular.module('arbr.controllers', [])
     $scope.loadMoreTweets = function () {
         alert("Loading tweets!");
     }
-  }
+
+    }
 ]);
 
 // .controller('MapCtrl', ["$scope", "$firebase", function($scope, $ionicLoading, $compile, $state, $firebase) {
