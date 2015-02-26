@@ -5,11 +5,9 @@
         </button>
   </ion-nav-buttons>
   <ion-content has-tabs="false" scroll="false">
-  <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options'></ui-gmap-google-map>
-  	   <li ng-repeat="location in locations">
-			{{location.pos}}
-       </li>
-    <!-- <div id="map" data-tap-disabled="true" ></div> -->
-    <!-- <my-map> -->
+    <ui-gmap-google-map data-tap-disabled="true" center='map.center' zoom='map.zoom' options='map.options'>
+      <ui-gmap-markers models="locationArray" coords="'self'" icon="'icon'">
+      </ui-gmap-markers>  
+    </ui-gmap-google-map>
   </ion-content>
 </ion-view>

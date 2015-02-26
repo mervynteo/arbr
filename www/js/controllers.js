@@ -4,22 +4,6 @@ angular.module('arbr.controllers', [])
   console.log('rawr');
 })
 
-.factory("User", ["$FirebaseObject", "$firebase", function($FirebaseObject, $firebase) {
-  // create a new factory based on $FirebaseObject
-  var UserFactory = $FirebaseObject.$extendFactory({
-    // these methods exist on the prototype, so we can access the data using `this`
-    getFullName: function() {
-      return this.firstName + " " + this.lastName;
-    }
-  });
-  return function(userId) {
-    var ref = new Firebase("https://<your firebase>.firebaseio.com/users/").child(userId);
-    // override the factory used by $firebase
-    var sync = $firebase(ref, { objectFactory: UserFactory });
-    return sync.$asObject(); // this will be an instance of UserFactory
-  }
-}])
-
 .controller('SplashCtrl', function($scope, $stateParams, $state) {
   $scope.fbLogin = function() {
       openFB.login(
@@ -75,14 +59,33 @@ angular.module('arbr.controllers', [])
 
 .controller("MapCtrl", ["$scope", "$firebase",
   function($scope, $firebase, $ionicLoading, $state) {
-    var ref = new Firebase("https://arbr-project.firebaseio.com");
-    // create an AngularFire reference to the data
-    var sync = $firebase(ref);
-    // download the data into a local object
-    $scope.locations = sync.$asObject();
-    console.log( $scope.locations );
-
+    $scope.locationArray = [];
+    $scope.icon = '../img/arbr-map-marker.png';
     $scope.map = { center: { latitude: 37.7833, longitude: -122.4167 }, zoom: 13, options: {disableDefaultUI: true}};
+
+    var ref = new Firebase("https://arbr-project.firebaseio.com");
+    var sync = $firebase(ref);
+    var obj = sync.$asObject();
+    var unformattedLocations = [];
+    var formattedLocations = [];
+
+    obj.$loaded().then(function() {
+      unformattedLocations = obj[0].locations;
+      var i = 0;
+      for (x in unformattedLocations) { 
+        formattedLocations[i] = {'id': i,
+                                 'icon': '../img/arbr-map-marker.png',
+                                 'name': unformattedLocations[x].name, 
+                                 'latitude': unformattedLocations[x].pos[0],
+                                 'longitude': unformattedLocations[x].pos[1],
+                                };
+        i++;
+      }
+
+      // Set our locationArray to the freshly formatted set of locations
+      $scope.locationArray = formattedLocations;
+
+    });
 
     $scope.userSettings = function() {
       $state.go("userProfile");
