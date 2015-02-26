@@ -63,6 +63,12 @@ angular.module('arbr.controllers', [])
     $scope.icon = '../img/arbr-map-marker.png';
     $scope.map = { center: { latitude: 37.7833, longitude: -122.4167 }, zoom: 13, options: {disableDefaultUI: true}};
 
+    $scope.events = {
+      click: function(marker){
+        alert(this.model.name);
+      }
+    };
+
     // $http.get('http://localhost:3300/api/places').then(function(resp) {
     //     console.log('Success', resp);
     //     // For JSON responses, resp.data contains the result
@@ -85,7 +91,7 @@ angular.module('arbr.controllers', [])
                                  'icon': './img/arbr-map-marker.png',
                                  'name': unformattedLocations[x].name, 
                                  'latitude': unformattedLocations[x].pos[0],
-                                 'longitude': unformattedLocations[x].pos[1],
+                                 'longitude': unformattedLocations[x].pos[1]
                                 };
         i++;
       }
@@ -97,10 +103,6 @@ angular.module('arbr.controllers', [])
 
     $scope.userSettings = function() {
       $state.go("userProfile");
-    }
-
-    $scope.loadMoreTweets = function () {
-        alert("Loading tweets!");
     }
 
     }
