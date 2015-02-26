@@ -69,7 +69,7 @@ $balanced: #84A187 !default;
 
 #gmaps {
     width: 100%;
-    // height: calc(100% - 65px);
+    height: 100%;
 }
 
 .scroll {
@@ -113,3 +113,5 @@ background-color: transparent;
 .whiteText {
 	color: white !important;
 }
+
+.angular-google-map, .angular-google-map-container { height: 100%; }
