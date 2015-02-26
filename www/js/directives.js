@@ -1,5 +1,5 @@
 angular.module('arbr.directives', [])
-.directive('myMap', ['$rootScope', function($rootScope, $compile, $scope, $parse) {
+.directive('myMap', ['$rootScope', '$compile', function($rootScope, $compile, $scope, $parse) {
     // directive link function
     var link = function(scope, element, attrs) {
         var map, infoWindow;
@@ -20,10 +20,7 @@ angular.module('arbr.directives', [])
         function initMap() {
             if (map === void 0) {
                 map = new google.maps.Map(element[0], mapOptions);
-                scope.googleMap = map;
             }
-
-            console.log(scope.googleMap);
         }
         
         // place a marker
@@ -45,20 +42,22 @@ angular.module('arbr.directives', [])
             // console.log(compiled);
             
             google.maps.event.addListener(marker, 'click', function (scope) {
-                // console.log($compile(contentString));
-                // close window if not undefined
 
-                var contentString = "<h4 class=windowTitle ng-click='clickTest()'>" + content + "</h4>";
-                var template = angular.element($compile(contentString)(scope));
+                function clickTest() {
+                    console.log('raw');
+                }
 
-                // var compiled = compile(content)(scope);
+                var contentString = "<div ng-click='clickTest()'class='infowindow'><h4 class=windowTitle>" + content + "</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam eos non eveniet labore velit itaque tempora numquam necessitatibus, earum ut, mollitia, eius blanditiis a iusto dicta? Commodi praesentium optio libero.</p></div>";
+                var compiled = $compile(contentString)(scope);
+                console.log(compiled);
 
                 if (infoWindow !== void 0) {
                     infoWindow.close();
                 }
                 // create new window
                 var infoWindowOptions = {
-                    content: contentString
+                    content: compiled[0],
+                    maxWidth: 200
                 };
                 infoWindow = new google.maps.InfoWindow(infoWindowOptions);
                 infoWindow.open(map, marker);
@@ -84,12 +83,6 @@ angular.module('arbr.directives', [])
                 setMarker(map, locPosLatLong, locName, locName);
             }
         });
-
-
-        
-        // setMarker(map, new google.maps.LatLng(51.508515, -0.125487), 'London', 'Just some content');
-        // setMarker(map, new google.maps.LatLng(52.370216, 4.895168), 'Amsterdam', 'More content');
-        // setMarker(map, new google.maps.LatLng(48.856614, 2.352222), 'Paris', 'Text here');
     };
     
     return {

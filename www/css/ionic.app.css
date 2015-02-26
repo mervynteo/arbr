@@ -7675,7 +7675,8 @@ a.button {
   height: 100%; }
 
 #gmaps {
-  width: 100%; }
+  width: 100%;
+  height: 100%; }
 
 .scroll {
   height: 100%; }
@@ -7701,3 +7702,6 @@ a.button {
 
 .whiteText {
   color: white !important; }
+
+.angular-google-map, .angular-google-map-container {
+  height: 100%; }
