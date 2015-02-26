@@ -115,3 +115,12 @@ background-color: transparent;
 }
 
 .angular-google-map, .angular-google-map-container { height: 100%; }
+
+.arbrInfoWindow {
+	width: 250px;
+
+	.button {
+		z-index: 999999;
+		width: 100%;
+	}
+}

@@ -5,8 +5,19 @@
         </button>
   </ion-nav-buttons>
   <ion-content has-tabs="false" scroll="false">
-    <ui-gmap-google-map data-tap-disabled="true" center='map.center' zoom='map.zoom' options='map.options'>
-      <ui-gmap-markers models="locationArray" events="events" coords="'self'" icon="'icon'">
+    <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options' events=''>
+      <ui-gmap-markers models="locationArray" coords="'self'" icon="'icon'" events="'{{events}}'">
+        <ui-gmap-windows show="show" options='windowOptions'>
+            <div class="arbrInfoWindow" ng-non-bindable>
+              <div ng-controller="InfoWindowCtrl">
+                <h4>{{name}}</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas inventore quisquam hic expedita vel, enim porro reprehenderit iste neque commodi quae aliquid tempore ad, cumque ipsam modi tenetur at quibusdam?</p>
+                <button ng-click="clickTest()" class="button button-balanced">
+                  <h5 class="whiteText">Check in to plant a tree!</h5>
+                </button>
+              </div>
+            </div>
+        </ui-gmap-windows>
       </ui-gmap-markers>  
     </ui-gmap-google-map>
   </ion-content>

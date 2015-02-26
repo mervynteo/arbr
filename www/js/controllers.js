@@ -57,15 +57,32 @@ angular.module('arbr.controllers', [])
   ionic.Platform.ready(getInfo);
 })
 
+.controller("InfoWindowCtrl", function($scope) {
+  $scope.$apply();
+  console.log('yes');
+
+  $scope.clickTest = function() {
+    console.log('rawr');
+  }
+})
+
 .controller("MapCtrl", ["$scope", "$firebase",
   function($scope, $firebase, $ionicLoading, $state) {
     $scope.locationArray = [];
     $scope.icon = '../img/arbr-map-marker.png';
-    $scope.map = { center: { latitude: 37.7833, longitude: -122.4167 }, zoom: 13, options: {disableDefaultUI: true}};
+    $scope.map = { 
+      center: { latitude: 37.7833, longitude: -122.4167 }, 
+      zoom: 13,
+      options: {disableDefaultUI: true}
+    };
+    
+    function clickTest() {
+      console.log('rawr');
+    }
 
     $scope.events = {
       click: function(marker){
-        alert(this.model.name);
+        console.log('rawr');
       }
     };
 
