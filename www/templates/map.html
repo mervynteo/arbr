@@ -1,5 +1,7 @@
 <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
 <ion-view title="arbr">
+  <!-- <ion-nav-bar class="bar-royal">
+  </ion-nav-bar> -->
   <ion-nav-buttons side="right">
         <button class="button button-icon ion-gear-a" ui-sref="userProfile">
         </button>
@@ -8,11 +10,11 @@
     <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options' events=''>
       <ui-gmap-markers models="locationArray" coords="'self'" icon="'icon'" events="'{{events}}'">
         <ui-gmap-windows show="show" options='windowOptions'>
-            <div class="arbrInfoWindow">
-              <div ng-controller="InfoWindowCtrl">
+            <div class="arbrInfoWindow" ng-controller="InfoWindowCtrl">
+              <div>
                 <h4 ng-non-bindable>{{name}}</h4>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas inventore quisquam hic expedita vel, enim porro reprehenderit iste neque commodi quae aliquid tempore ad, cumque ipsam modi tenetur at quibusdam?</p>
-                <button ng-click="clickTest()" class="button button-balanced">
+                <button ng-click="arbrLocationPage($parent.model.fbID)" class="button button-balanced">
                   <h5 class="whiteText">Check in to plant a tree!</h5>
                 </button>
               </div>

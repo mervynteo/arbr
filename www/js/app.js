@@ -32,17 +32,15 @@ angular.module('arbr', ['ionic', 'arbr.controllers', 'uiGmapgoogle-maps',"fireba
 
   .state('splash', {
     url: "/splash",
-    // abstract:true,
     templateUrl: "templates/splash.html",
     controller: 'SplashCtrl'
   })
 
-  // .state('arbrLocations', {
-  //   url: "/arbrLocations",
-  //   abstract: true,
-  //   template: "templates/arbrLocations.html",
-  //   controller: "ArbrLocationCtrl"
-  // })
+  .state('arbrLocation', {
+    url: "/arbrLocation/:fbID",
+    templateUrl: "templates/arbrlocation.html",
+    controller: "ArbrLocationPageCtrl"
+  })
 
   .state('userProfile', {
       url: "/profile",
