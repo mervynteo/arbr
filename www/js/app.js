@@ -47,19 +47,16 @@ angular.module('arbr', ['ionic', 'arbr.controllers', 'uiGmapgoogle-maps',"fireba
     views: {
       'map-view' : {
         templateUrl: "templates/map.html",
-        controller: 'LocationViewCtrl',
         resolve: {
           currentLocation: function($q) {
             var q = $q.defer();
             navigator.geolocation.getCurrentPosition(function(pos) {
-              console.log('Position=');
-              console.log(pos);
               latLong = { 'lat' : pos.coords.latitude,
                           'long' : pos.coords.longitude 
                         }
+              // $scope.latLong = latLong
               q.resolve(latLong);
             }, function(error) {
-              console.log('error');
               console.log(error);
               latLong = null;
 
@@ -67,7 +64,8 @@ angular.module('arbr', ['ionic', 'arbr.controllers', 'uiGmapgoogle-maps',"fireba
             });
             return q.promise;
           }
-        }
+        },
+        controller: 'LocationViewCtrl'
       }
     }
   })
