@@ -10,7 +10,7 @@ angular.module('arbr.controllers', [])
           function(response) {
               console.log(response)
               if (response.status === 'connected') {
-                  $state.go("map");
+                  $state.go("locationview.map");
               } else {
                   alert('Facebook login failed, please try again');
                   $state.go("splash");
@@ -106,7 +106,7 @@ angular.module('arbr.controllers', [])
   }
 })
 
-.controller("MapCtrl", ["$scope", "$firebase",
+.controller("LocationViewCtrl", ["$scope", "$firebase",
   function($scope, $firebase, $ionicLoading, $state) {
     $scope.locationArray = [];
     $scope.icon = '../img/arbr-map-marker.png';
@@ -115,9 +115,9 @@ angular.module('arbr.controllers', [])
       zoom: 13,
       options: {disableDefaultUI: true}
     };
-    
-    function clickTest() {
-      console.log('rawr');
+
+    $scope.arbrLocationPage = function(id) {
+      $state.go('arbrLocation', { fbID: id });
     }
 
     $scope.events = {

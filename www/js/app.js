@@ -36,6 +36,32 @@ angular.module('arbr', ['ionic', 'arbr.controllers', 'uiGmapgoogle-maps',"fireba
     controller: 'SplashCtrl'
   })
 
+  .state('locationview', {
+    url: "/locationview",
+    abstract: true,
+    templateUrl: "templates/locationview.html",
+  }) 
+
+  .state('locationview.map', {
+    url: "/map",
+    views: {
+      'map-view' : {
+        templateUrl: "templates/map.html",
+        controller: 'LocationViewCtrl'
+      }
+    }
+  })
+
+  .state('locationview.list', {
+    url: "/list",
+    views: {
+      'list-view' : {
+        templateUrl: "templates/list.html",
+        controller: 'LocationViewCtrl'
+      }
+    }
+  })
+
   .state('arbrLocation', {
     url: "/arbrLocation/:fbID",
     templateUrl: "templates/arbrlocation.html",
@@ -48,10 +74,10 @@ angular.module('arbr', ['ionic', 'arbr.controllers', 'uiGmapgoogle-maps',"fireba
       controller: "ProfileCtrl"
   })
 
-  .state('map', {
-    url: "/map",
-    templateUrl: "templates/map.html",
-    controller: "MapCtrl"
-  });
+  // .state('map', {
+  //   url: "/map",
+  //   templateUrl: "templates/map.html",
+  //   controller: "MapCtrl"
+  // });
 
 });

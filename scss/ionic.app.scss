@@ -89,25 +89,17 @@ $balanced: #84A187 !default;
 	}
 }
 
-.tabs {
+.tab-item {
+	opacity: .35;
+}
 
-	height: 65px;
-	border-top: 0;
+.tabs-icon-left > .tabs .tab-item {
+	font-size: 14px;
+}
 
-	a {
-		padding-top: 8px;
-		color: $arbr-dark-blue;
-	}
-
-	.tab-item .icon {
-		margin: 0 auto 2px;
-		font-size: 25px;
-	}
-
-	.tab-title {
-		font-size: 1.5em;
-		padding-top: 1em;
-	}
+.tab-item .icon {
+	font-size: 12px;
+	margin-right: 5px;
 }
 
 [nav-view-transition][nav-view-direction] {
@@ -122,6 +114,8 @@ background-color: transparent;
 
 .arbrInfoWindow {
 	width: 250px;
+	z-index: 9999;
+
 
 	.button {
 		z-index: 999999;
@@ -135,4 +129,8 @@ background-color: transparent;
 
 .text-center {
 	text-align: center;
+}
+
+.locationList {
+	padding-top: 50px;
 }

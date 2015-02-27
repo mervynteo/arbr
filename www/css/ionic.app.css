@@ -7687,18 +7687,15 @@ a.button {
 .bar.bar-header .title {
   font-weight: bold; }
 
-.tabs {
-  height: 65px;
-  border-top: 0; }
-  .tabs a {
-    padding-top: 8px;
-    color: #374A5C; }
-  .tabs .tab-item .icon {
-    margin: 0 auto 2px;
-    font-size: 25px; }
-  .tabs .tab-title {
-    font-size: 1.5em;
-    padding-top: 1em; }
+.tab-item {
+  opacity: 0.35; }
+
+.tabs-icon-left > .tabs .tab-item {
+  font-size: 14px; }
+
+.tab-item .icon {
+  font-size: 12px;
+  margin-right: 5px; }
 
 [nav-view-transition][nav-view-direction] {
   background-color: transparent; }
@@ -7710,7 +7707,8 @@ a.button {
   height: 100%; }
 
 .arbrInfoWindow {
-  width: 250px; }
+  width: 250px;
+  z-index: 9999; }
   .arbrInfoWindow .button {
     z-index: 999999;
     width: 100%; }
@@ -7720,3 +7718,6 @@ a.button {
 
 .text-center {
   text-align: center; }
+
+.locationList {
+  padding-top: 50px; }
