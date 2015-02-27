@@ -25,7 +25,7 @@ angular.module('arbr.controllers', [])
   $scope.photoUrl = {};
 
   $scope.myGoBack = function() {
-    $state.go("map");
+    $ionicHistory.goBack();
   }
 
   $scope.logout = function() {
@@ -108,6 +108,7 @@ angular.module('arbr.controllers', [])
 
 .controller("LocationViewCtrl", ["$scope", "$firebase",
   function($scope, $firebase, $ionicLoading, $state) {
+    console.log($scope.currentLocation);
     $scope.locationArray = [];
     $scope.icon = '../img/arbr-map-marker.png';
     $scope.map = { 
