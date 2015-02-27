@@ -65,7 +65,7 @@ angular.module('arbr.controllers', [])
 
 })
 
-.controller("ArbrLocationPageCtrl", function($scope, $state, $ionicHistory, $ionicLoading, $stateParams, $cordovaProgress, $timeout) {
+.controller("ArbrLocationPageCtrl", function($scope, $state, $ionicHistory, $ionicLoading, $stateParams, $cordovaProgress, $timeout, $cordovaToast) {
   var locationID = $stateParams.fbID;
   $scope.data = {};
   openFB.api({
@@ -90,6 +90,7 @@ angular.module('arbr.controllers', [])
       $cordovaProgress.showBarWithLabel(true, 9000, "Verifying location, hang tight!");
       $timeout(function(){
         $state.go('map');
+        $cordovaToast.show('You just planted a tree!', 'long', 'bottom');
       },1000);
     } else {
       $scope.loadingIndicator = $ionicLoading.show({

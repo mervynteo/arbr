@@ -19,6 +19,7 @@
     "org.apache.cordova.geolocation",
     "org.apache.cordova.statusbar",
     "https://github.com/Wizcorp/phonegap-facebook-plugin.git",
-    "org.pbernasconi.progressindicator"
+    "org.pbernasconi.progressindicator",
+    "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git"
   ]
 }
