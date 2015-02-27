@@ -58,11 +58,9 @@ angular.module('arbr.controllers', [])
 })
 
 .controller("InfoWindowCtrl", function($scope) {
-  $scope.$apply();
-  console.log('yes');
 
   $scope.clickTest = function() {
-    console.log('rawr');
+    console.log(this.$id);
   }
 })
 
