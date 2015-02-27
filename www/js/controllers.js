@@ -108,7 +108,9 @@ angular.module('arbr.controllers', [])
 
 .controller("LocationViewCtrl", ["$scope", "$firebase",
   function($scope, $firebase, $ionicLoading, $state) {
-    // latLong is an object that contains the latitude and longitude of a user's current position
+
+
+    // latLong is an object that contains the latitude and longitude of a user's position
     $scope.icon = '../img/arbr-map-marker.png';
     $scope.map = { 
       // center: { latitude: 37.7833, longitude: -122.4167 }, 

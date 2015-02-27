@@ -47,24 +47,24 @@ angular.module('arbr', ['ionic', 'arbr.controllers', 'uiGmapgoogle-maps',"fireba
     views: {
       'map-view' : {
         templateUrl: "templates/map.html",
-        resolve: {
-          currentLocation: function($q) {
-            var q = $q.defer();
-            navigator.geolocation.getCurrentPosition(function(pos) {
-              latLong = { 'lat' : pos.coords.latitude,
-                          'long' : pos.coords.longitude 
-                        }
-              // $scope.latLong = latLong
-              q.resolve(latLong);
-            }, function(error) {
-              console.log(error);
-              latLong = null;
-
-              q.reject('failed to get position')
-            });
-            return q.promise;
-          }
-        },
+        // resolve: {
+        //   currentLocation: function($q) {
+        //     console.log('here');
+        //     var q = $q.defer();
+        //     navigator.geolocation.getCurrentPosition(function(pos) {
+        //       latLong = { 'lat' : pos.coords.latitude,
+        //                   'long' : pos.coords.longitude 
+        //                 }
+        //       q.resolve(latLong);
+        //       console.log('there');
+        //     }, function(error) {
+        //       console.log(error);
+        //       latLong = null;
+        //       q.reject('failed to get position')
+        //     });
+        //     return q.promise;
+        //   }
+        // },
         controller: 'LocationViewCtrl'
       }
     }
