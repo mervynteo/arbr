@@ -7,7 +7,7 @@
   </ion-nav-buttons>
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="location in locationArray" ng-href="#/arbrLocation/:{{location.fbID}}">
+      <ion-item ng-repeat="location in locationArray" ng-href="#/arbrLocation/{{location.fbID}}">
         {{location.name}}
       </ion-item>
     </ion-list>
