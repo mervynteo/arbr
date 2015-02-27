@@ -39,11 +39,11 @@ angular.module('arbr.controllers', [])
   }
 
  function getInfo() {
+     $scope.data = {};
      openFB.api({
          path: '/me',
          success: function(data) {
-             // console.log(JSON.stringify(data));
-             $scope.photoUrl = 'http://graph.facebook.com/' + data.id + '/picture?type=small';
+             console.log(data);
              $scope.data = data;
              $scope.$apply();
          },
@@ -65,14 +65,12 @@ angular.module('arbr.controllers', [])
 
 })
 
-.controller("ArbrLocationPageCtrl", function($scope, $state, $ionicHistory, $stateParams) {
+.controller("ArbrLocationPageCtrl", function($scope, $state, $ionicHistory, $ionicLoading, $stateParams, $cordovaProgress, $timeout) {
   var locationID = $stateParams.fbID;
   $scope.data = {};
-  console.log(locationID);
   openFB.api({
       path: '/' + locationID,
       success: function(data) {
-          // $scope.photoUrl = 'http://graph.facebook.com/' + data.id + '/picture?type=small';
           $scope.data = data;
           console.log($scope.data);
           $scope.$apply();
@@ -82,6 +80,29 @@ angular.module('arbr.controllers', [])
        alert('Error getting your profile from FB');
      }
    });
+
+  $scope.goBack = function() {
+    $ionicHistory.goBack();
+  }
+
+  $scope.checkIn = function() {
+    if (window.cordova) {
+      $cordovaProgress.showBarWithLabel(true, 9000, "Verifying location, hang tight!");
+      $timeout(function(){
+        $state.go('map');
+      },1000);
+    } else {
+      $scope.loadingIndicator = $ionicLoading.show({
+         content: 'Verifying your location',
+         animation: 'fade-in',
+         showBackdrop: false
+       }); 
+       
+       $timeout(function(){
+         $ionicLoading.hide();
+       },1000);
+    }
+  }
 })
 
 .controller("MapCtrl", ["$scope", "$firebase",
@@ -103,14 +124,6 @@ angular.module('arbr.controllers', [])
         console.log('rawr');
       }
     };
-
-    // $http.get('http://localhost:3300/api/places').then(function(resp) {
-    //     console.log('Success', resp);
-    //     // For JSON responses, resp.data contains the result
-    //   }, function(err) {
-    //     console.error('ERR', err);
-    //     // err.status will contain the status code
-    //   })
 
     var ref = new Firebase("https://arbr-project.firebaseio.com");
     var sync = $firebase(ref);

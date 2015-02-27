@@ -7651,6 +7651,9 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+.pane, .view {
+  background: #FAFAFA; }
+
 .splash {
   background: url('../img/splash-background.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
@@ -7711,3 +7714,9 @@ a.button {
   .arbrInfoWindow .button {
     z-index: 999999;
     width: 100%; }
+
+.subdued {
+  opacity: 0.75; }
+
+.text-center {
+  text-align: center; }

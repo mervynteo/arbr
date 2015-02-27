@@ -35,6 +35,10 @@ $balanced: #84A187 !default;
 
 @import "www/lib/ionic/scss/ionic";
 
+.pane, .view {
+	background: #FAFAFA;
+}
+
 .splash {
 	background: url('../img/splash-background.jpg') no-repeat center center fixed;
 	-webkit-background-size: cover;
@@ -123,4 +127,12 @@ background-color: transparent;
 		z-index: 999999;
 		width: 100%;
 	}
+}
+
+.subdued {
+	opacity: .75;
+}
+
+.text-center {
+	text-align: center;
 }
