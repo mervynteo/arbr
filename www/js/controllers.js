@@ -25,7 +25,7 @@ angular.module('arbr.controllers', [])
   $scope.photoUrl = {};
 
   $scope.myGoBack = function() {
-    $ionicHistory.goBack();
+    $state.go("locationview.map");
   }
 
   $scope.logout = function() {
@@ -48,8 +48,8 @@ angular.module('arbr.controllers', [])
              $scope.$apply();
          },
 
-        error: function() {
-          alert('Error getting your profile from FB');
+        error: function(err) {
+          alert(err);
         }
       });
   }
@@ -76,8 +76,8 @@ angular.module('arbr.controllers', [])
           $scope.$apply();
       },
 
-     error: function() {
-       alert('Error getting your profile from FB');
+     error: function(err) {
+       alert(err.message);
      }
    });
 
@@ -89,35 +89,91 @@ angular.module('arbr.controllers', [])
     if (window.cordova) {
       $cordovaProgress.showBarWithLabel(true, 9000, "Verifying location, hang tight!");
       $timeout(function(){
-        $state.go('map');
+        $state.go('locationview.map');
         $cordovaToast.show('You just planted a tree!', 'long', 'bottom');
       },1000);
     } else {
       $scope.loadingIndicator = $ionicLoading.show({
-         content: 'Verifying your location',
+         template: 'Verifying your location',
          animation: 'fade-in',
-         showBackdrop: false
-       }); 
+         showBackdrop: true
+       });
+
+      openFB.api({
+          path:  "/check-in",
+          success: function(data) {
+          console.log(data);
+              // $scope.data = data;
+              // $scope.$apply();
+          },
+
+         error: function(err) {
+           console.log(err);
+         }
+       });
+
+
        
        $timeout(function(){
          $ionicLoading.hide();
+         $state.go("locationview.map");
        },1000);
     }
   }
 })
 
-.controller("LocationViewCtrl", ["$scope", "$firebase",
-  function($scope, $firebase, $ionicLoading, $state) {
+.controller("LocationViewCtrl", ["$scope", "$firebase", "$cordovaGeolocation", "$ionicLoading",
+  function($scope, $firebase, $cordovaGeolocation, $ionicLoading, $state) {
+
+    $scope.loadingContent = 'Showing Loading Indicator';
+
+    $ionicLoading.show({
+      showBackdrop: true,
+      template: 'Getting current location...'
+    });
 
 
-    // latLong is an object that contains the latitude and longitude of a user's position
     $scope.icon = '../img/arbr-map-marker.png';
     $scope.map = { 
+      // Original SF location
       // center: { latitude: 37.7833, longitude: -122.4167 }, 
-      center: { latitude: latLong.lat, longitude: latLong.long},
       zoom: 13,
       options: {disableDefaultUI: true}
     };
+
+    if (window.cordova) {
+      var posOptions = {timeout: 10000, enableHighAccuracy: false};
+      $cordovaGeolocation
+        .getCurrentPosition(posOptions)
+        .then(function (position) {
+          var lat  = position.coords.latitude
+          var long = position.coords.longitude
+          $scope.map.center = {
+            latitude: latLong.lat,
+            longitude: latLong.lng
+          }
+          $scope.$apply();
+          $ionicLoading.hide();
+        }, function(err) {
+          alert('Unable to get location: ' + err.message);
+        });
+    }
+
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      latLong = { 'lat' : pos.coords.latitude,
+                  'lng' : pos.coords.longitude 
+                }
+      $scope.map.center = {
+        latitude: latLong.lat,
+        longitude: latLong.lng
+      }
+      $scope.$apply();
+      $ionicLoading.hide();
+    });
+
+
+
+    $scope.locationArray = [];
 
     $scope.arbrLocationPage = function(id) {
       $state.go('arbrLocation', { fbID: id });
