@@ -122,22 +122,17 @@ angular.module('arbr.controllers', [])
   }
 })
 
-.controller("LocationViewCtrl", ["$scope", "$firebase", "$cordovaGeolocation", "$ionicLoading",
-  function($scope, $firebase, $cordovaGeolocation, $ionicLoading, $state) {
-
-    $scope.loadingContent = 'Showing Loading Indicator';
+.controller("LocationViewCtrl", ["$scope", "$http", "$firebase", "$cordovaGeolocation", "$ionicLoading", "$state", "$q",
+  function($scope, $http, $firebase, $cordovaGeolocation, $ionicLoading, $state, $q) {
 
     $ionicLoading.show({
       showBackdrop: true,
       template: 'Getting current location...'
     });
 
-
     $scope.icon = '../img/arbr-map-marker.png';
     $scope.map = { 
-      // Original SF location
-      // center: { latitude: 37.7833, longitude: -122.4167 }, 
-      zoom: 13,
+      zoom: 10,
       options: {disableDefaultUI: true}
     };
 
@@ -149,9 +144,35 @@ angular.module('arbr.controllers', [])
           var lat  = position.coords.latitude
           var long = position.coords.longitude
           $scope.map.center = {
-            latitude: latLong.lat,
-            longitude: latLong.lng
+            latitude: lat,
+            longitude: long
           }
+          config = {
+             params: { lat: lat, lng: lng}
+          };
+
+          $http.get('http://localhost:3300/api/places/', config).then(function(resp) {
+            formattedLocations = [];
+
+            for (i in resp.data) {
+              formattedLocations[i] = {
+                'id': i,
+                'icon': './img/arbr-map-marker.png',
+                'place_id': resp.data[i].place_id,
+                'fb_id': resp.data[i].fb_id,
+                'longitude': resp.data[i].lng,
+                'latitude' : resp.data[i].lat
+              }
+            }
+            $scope.locationArray = formattedLocations;
+
+          }, function(err) {
+            console.error('ERR', err);
+            console.log(err.status);
+            // err.status will contain the status code
+          })
+
+
           $scope.$apply();
           $ionicLoading.hide();
         }, function(err) {
@@ -163,17 +184,70 @@ angular.module('arbr.controllers', [])
       latLong = { 'lat' : pos.coords.latitude,
                   'lng' : pos.coords.longitude 
                 }
+
       $scope.map.center = {
         latitude: latLong.lat,
         longitude: latLong.lng
       }
+
+      config = {
+         params: { lat: latLong.lat, lng: latLong.lng}
+      };
+
+      function getFacebookName(id) {
+        // return 't9834091384901384908103984';
+        return $q(function(resolve, reject) {
+          openFB.api({
+            path: '/' + id,
+            success: function(fb_data) {
+              resolve(fb_data.name);
+            },
+            error: function(err) {
+              reject('FAILURE');
+            }
+          })
+
+        })
+      }
+
+      $http.get('http://localhost:3300/api/places/', config).then(function(resp) {
+        formattedLocations = [];
+
+        for (i in resp.data) {
+
+          $scope.myArray = [];
+
+          var promise = getFacebookName(resp.data[i].fb_id);
+          promise.then(function(value) {
+            $scope.myArray[resp.data[i].fb_id] = (value);
+          })
+
+
+          var deferred = $q.defer();
+          formattedLocations[i] = {
+            'id': i,
+            'name': deferred.resolve(getFacebookName(resp.data[i].fb_id)),
+            'icon': './img/arbr-map-marker.png',
+            'place_id': resp.data[i].place_id,
+            'fb_id': resp.data[i].fb_id,
+            'longitude': resp.data[i].lng,
+            'latitude' : resp.data[i].lat
+          }
+
+
+        }
+        $scope.locationArray = formattedLocations;
+
+      }, function(err) {
+        console.error('ERR', err);
+        console.log(err.status);
+        // err.status will contain the status code
+      })
+
       $scope.$apply();
       $ionicLoading.hide();
     });
 
-
-
-    $scope.locationArray = [];
 
     $scope.arbrLocationPage = function(id) {
       $state.go('arbrLocation', { fbID: id });
@@ -185,30 +259,30 @@ angular.module('arbr.controllers', [])
       }
     };
 
-    var ref = new Firebase("https://arbr-project.firebaseio.com");
-    var sync = $firebase(ref);
-    var obj = sync.$asObject();
-    var unformattedLocations = [];
-    var formattedLocations = [];
+    // var ref = new Firebase("https://arbr-project.firebaseio.com");
+    // var sync = $firebase(ref);
+    // var obj = sync.$asObject();
+    // var unformattedLocations = [];
+    // var formattedLocations = [];
 
-    obj.$loaded().then(function() {
-      unformattedLocations = obj[0].locations;
-      var i = 0;
-      for (x in unformattedLocations) { 
-        formattedLocations[i] = {'id': i,
-                                 'icon': './img/arbr-map-marker.png',
-                                 'name': unformattedLocations[x].name, 
-                                 'fbID': unformattedLocations[x].fbID,
-                                 'latitude': unformattedLocations[x].pos[0],
-                                 'longitude': unformattedLocations[x].pos[1]
-                                };
-        i++;
-      }
+    // obj.$loaded().then(function() {
+    //   unformattedLocations = obj[0].locations;
+    //   var i = 0;
+    //   for (x in unformattedLocations) { 
+    //     formattedLocations[i] = {'id': i,
+    //                              'icon': './img/arbr-map-marker.png',
+    //                              'name': unformattedLocations[x].name, 
+    //                              'fbID': unformattedLocations[x].fbID,
+    //                              'latitude': unformattedLocations[x].pos[0],
+    //                              'longitude': unformattedLocations[x].pos[1]
+    //                             };
+    //     i++;
+    //   }
 
-      // Set our locationArray to the freshly formatted set of locations
-      $scope.locationArray = formattedLocations;
+    //   // Set our locationArray to the freshly formatted set of locations
+    //   $scope.locationArray = formattedLocations;
 
-    });
+    // });
 
     $scope.userSettings = function() {
       $state.go("userProfile");
